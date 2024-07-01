@@ -15,7 +15,7 @@ Este é um projeto de um sistema bancário simples desenvolvido com NestJS. O si
 2. Navegue até o diretório do projeto:
 
     ```bash
-    cd banco-comunitario
+    cd banco-comunitario-projeto
     ```
 
 3. Instale as dependências:
