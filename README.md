@@ -9,7 +9,7 @@ Este é um projeto de um sistema bancário simples desenvolvido com NestJS. O si
 1. Clone o repositório:
 
     ```bash
-    git clone https://github.com/seu-usuario/banco-comunitario.git
+    git clone https://github.com/MayaraRocha95/banco-comunitario-projeto
     ```
 
 2. Navegue até o diretório do projeto:
