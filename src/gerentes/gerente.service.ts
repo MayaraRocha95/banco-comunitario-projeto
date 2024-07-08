@@ -27,12 +27,14 @@ export class GerenteService {
   }
 
   findAll(): Gerente[] {
-    return this.gerentes.map(gerente => plainToClass(Gerente, gerente));
+    return this.gerentes.map((gerente) => plainToClass(Gerente, gerente));
   }
 
   addCliente(gerenteId: string, clienteId: string): Gerente {
-    const gerente = this.gerentes.find(g => g.id === gerenteId);
-    const cliente = this.clienteService.findAll().find(c => c.id === clienteId);
+    const gerente = this.gerentes.find((g) => g.id === gerenteId);
+    const cliente = this.clienteService
+      .findAll()
+      .find((c) => c.id === clienteId);
 
     if (gerente && cliente) {
       gerente.clientes.push(cliente);
@@ -41,24 +43,37 @@ export class GerenteService {
     return plainToClass(Gerente, gerente);
   }
 
-  removeCliente(gerenteId: string, clienteId: string): { success: boolean; message: string } {
-    const gerente = this.gerentes.find(g => g.id === gerenteId);
-    const cliente = this.clienteService.findAll().find(c => c.id === clienteId);
+  removeCliente(
+    gerenteId: string,
+    clienteId: string,
+  ): { success: boolean; message: string } {
+    const gerente = this.gerentes.find((g) => g.id === gerenteId);
+    const cliente = this.clienteService
+      .findAll()
+      .find((c) => c.id === clienteId);
 
     if (gerente && cliente) {
-      gerente.clientes = gerente.clientes.filter(c => c.id !== clienteId);
+      gerente.clientes = gerente.clientes.filter((c) => c.id !== clienteId);
       cliente.gerente = null;
 
-      // Remover cliente da lista global de clientes
       const removed = this.clienteService.remove(clienteId);
-      return { success: removed, message: removed ? 'Cliente removido com sucesso' : 'Falha ao remover o cliente' };
+      return {
+        success: removed,
+        message: removed
+          ? 'Cliente removido com sucesso'
+          : 'Falha ao remover o cliente',
+      };
     }
     return { success: false, message: 'Gerente ou cliente não encontrado' };
   }
 
-  modifyConta(gerenteId: string, contaId: string, tipo: 'corrente' | 'poupanca'): Conta {
-    const gerente = this.gerentes.find(g => g.id === gerenteId);
-    const conta = this.contaService.findAll().find(c => c.id === contaId);
+  modifyConta(
+    gerenteId: string,
+    contaId: string,
+    tipo: 'corrente' | 'poupanca',
+  ): Conta {
+    const gerente = this.gerentes.find((g) => g.id === gerenteId);
+    const conta = this.contaService.findAll().find((c) => c.id === contaId);
 
     if (gerente && conta) {
       conta.tipo = tipo;
@@ -68,8 +83,10 @@ export class GerenteService {
   }
 
   openConta(gerenteId: string, createContaDto: CreateContaDto): Conta {
-    const gerente = this.gerentes.find(g => g.id === gerenteId);
-    const cliente = this.clienteService.findAll().find(c => c.id === createContaDto.clienteId);
+    const gerente = this.gerentes.find((g) => g.id === gerenteId);
+    const cliente = this.clienteService
+      .findAll()
+      .find((c) => c.id === createContaDto.clienteId);
 
     if (gerente && cliente) {
       const conta = this.contaService.create(createContaDto);
@@ -80,12 +97,14 @@ export class GerenteService {
   }
 
   closeConta(gerenteId: string, contaId: string): boolean {
-    const gerente = this.gerentes.find(g => g.id === gerenteId);
-    const conta = this.contaService.findAll().find(c => c.id === contaId);
+    const gerente = this.gerentes.find((g) => g.id === gerenteId);
+    const conta = this.contaService.findAll().find((c) => c.id === contaId);
 
     if (gerente && conta) {
       this.contaService.remove(contaId);
-      conta.cliente.contas = conta.cliente.contas.filter(c => c.id !== contaId);
+      conta.cliente.contas = conta.cliente.contas.filter(
+        (c) => c.id !== contaId,
+      );
       return true;
     }
     return false;

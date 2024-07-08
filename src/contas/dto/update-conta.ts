@@ -1,5 +1,4 @@
 export class UpdateContaDto {
-    saldo?: number;
-    limiteChequeEspecial?: number;
-  }
-  
+  saldo?: number;
+  limiteChequeEspecial?: number;
+}

@@ -7,6 +7,6 @@ import { ClienteModule } from '../clientes/cliente.module';
   imports: [ClienteModule],
   controllers: [ContaController],
   providers: [ContaService],
-  exports: [ContaService], 
+  exports: [ContaService],
 })
 export class ContaModule {}

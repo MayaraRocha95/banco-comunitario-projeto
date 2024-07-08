@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { GerenteService } from './gerente.service';
 import { GerenteController } from './gerente.controller';
 import { ClienteModule } from '../clientes/cliente.module';
-import { ContaModule } from '../contas/conta.module'; // Importa o ContaModule
+import { ContaModule } from '../contas/conta.module';
 
 @Module({
-  imports: [ClienteModule, ContaModule], // Certifique-se de importar o ContaModule
+  imports: [ClienteModule, ContaModule],
   controllers: [GerenteController],
   providers: [GerenteService],
 })

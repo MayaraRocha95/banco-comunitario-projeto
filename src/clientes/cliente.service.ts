@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  Logger,
+} from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { Cliente } from './interfaces/cliente.interface';
 import { CreateClienteDto } from './dto/create-cliente.dto';
@@ -17,16 +22,16 @@ export class ClienteService {
       this.logger.error('Erro ao criar cliente', error.stack);
       throw new BadRequestException(error.message);
     }
-  }
+  };
 
   findAll = (): Cliente[] => {
     try {
-      return this.clientes.map(cliente => plainToClass(Cliente, cliente));
+      return this.clientes.map((cliente) => plainToClass(Cliente, cliente));
     } catch (error) {
       this.logger.error('Erro ao listar todos os clientes', error.stack);
       throw new BadRequestException(error.message);
     }
-  }
+  };
 
   remove = (id: string): boolean => {
     try {
@@ -37,7 +42,7 @@ export class ClienteService {
       this.logger.error(`Erro ao remover cliente com ID ${id}`, error.stack);
       throw new BadRequestException(error.message);
     }
-  }
+  };
 
   private createCliente = (createClienteDto: CreateClienteDto): Cliente => {
     return plainToClass(Cliente, {
@@ -46,17 +51,17 @@ export class ClienteService {
       contas: [],
       gerente: null,
     });
-  }
+  };
 
   private findClienteIndexById = (id: string): number => {
-    const index = this.clientes.findIndex(cliente => cliente.id === id);
+    const index = this.clientes.findIndex((cliente) => cliente.id === id);
     if (index === -1) {
       throw new NotFoundException(`Cliente com ID ${id} não encontrado`);
     }
     return index;
-  }
+  };
 
   private generateUniqueId = (): string => {
     return Math.random().toString(36).substring(2);
-  }
+  };
 }
