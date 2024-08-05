@@ -14,16 +14,23 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClienteController = void 0;
 const common_1 = require("@nestjs/common");
-const create_cliente_use_case_1 = require("../../../application/use-cases/create-cliente.use-case");
 const create_cliente_dto_1 = require("../../../presentation/dtos/create-cliente.dto");
 const cliente_service_1 = require("../../../domain/services/cliente.service");
 let ClienteController = class ClienteController {
-    constructor(createClienteUseCase, clienteService) {
-        this.createClienteUseCase = createClienteUseCase;
+    constructor(clienteService) {
         this.clienteService = clienteService;
     }
     async create(createClienteDto) {
-        await this.createClienteUseCase.execute(createClienteDto);
+        try {
+            const cliente = await this.clienteService.create(createClienteDto);
+            return {
+                message: 'Cliente criado com sucesso',
+                data: cliente,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
     async findAll() {
         return this.clienteService.findAll();
@@ -45,7 +52,6 @@ __decorate([
 ], ClienteController.prototype, "findAll", null);
 exports.ClienteController = ClienteController = __decorate([
     (0, common_1.Controller)('clientes'),
-    __metadata("design:paramtypes", [create_cliente_use_case_1.CreateClienteUseCase,
-        cliente_service_1.ClienteService])
+    __metadata("design:paramtypes", [cliente_service_1.ClienteService])
 ], ClienteController);
 //# sourceMappingURL=cliente.controller.js.map
