@@ -1,3 +1,11 @@
 export class CreateGerenteDto {
-    nome: string;
-  }
+  nome: string;
+  email: string;
+  senha: string;
+  telefone: string;
+  endereco: string;
+  dataInicio: Date;
+  status: 'ativo' | 'inativo';
+  departamento: string;
+  nivelAcesso: string;
+}
