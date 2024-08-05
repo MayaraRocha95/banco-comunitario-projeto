@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common'
 import { GerenteService } from '../../../domain/services/gerente.service'
 import { CreateGerenteDto } from '../../../presentation/dtos/create-gerente.dto';
 import { CreateContaDto } from '../../../presentation/dtos/create-conta.dto';
-import { UpdateGerenteDto } from 'src/presentation/dtos/update-gerente.dto';
 
 @Controller('gerentes')
 export class GerenteController {
@@ -18,8 +17,28 @@ export class GerenteController {
     return this.gerenteService.findAll();
   }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() updateGerenteDto: UpdateGerenteDto) {
-    return this.gerenteService.update(id, updateGerenteDto);
+  @Put(':gerenteId/clientes/:clienteId')
+  async addCliente(@Param('gerenteId') gerenteId: string, @Param('clienteId') clienteId: string) {
+    return this.gerenteService.addCliente(gerenteId, clienteId);
+  }
+
+  @Delete(':gerenteId/clientes/:clienteId')
+  async removeCliente(@Param('gerenteId') gerenteId: string, @Param('clienteId') clienteId: string) {
+    return this.gerenteService.removeCliente(gerenteId, clienteId);
+  }
+
+  @Put(':gerenteId/contas/:contaId')
+  async modifyConta(@Param('gerenteId') gerenteId: string, @Param('contaId') contaId: string, @Body() { tipo }: { tipo: 'corrente' | 'poupanca' }) {
+    return this.gerenteService.modifyConta(gerenteId, contaId, tipo);
+  }
+
+  @Post(':gerenteId/contas')
+  async openConta(@Param('gerenteId') gerenteId: string, @Body() createContaDto: CreateContaDto) {
+    return this.gerenteService.openConta(gerenteId, createContaDto);
+  }
+
+  @Delete(':gerenteId/contas/:contaId')
+  async closeConta(@Param('gerenteId') gerenteId: string, @Param('contaId') contaId: string) {
+    return this.gerenteService.closeConta(gerenteId, contaId);
   }
 }

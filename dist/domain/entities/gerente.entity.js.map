@@ -1,1 +1,1 @@
-{"version":3,"file":"gerente.entity.js","sourceRoot":"","sources":["../../../src/domain/entities/gerente.entity.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,yDAAyC;AACzC,qDAA2C;AAE3C,MAAa,OAAO;CAanB;AAbD,0BAaC;AADC;IADC,IAAA,wBAAI,EAAC,GAAG,EAAE,CAAC,wBAAO,CAAC;;yCACA"}
+{"version":3,"file":"gerente.entity.js","sourceRoot":"","sources":["../../../src/domain/entities/gerente.entity.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,yDAAyC;AACzC,qDAA2C;AAE3C,MAAa,OAAO;CAKnB;AALD,0BAKC;AADC;IADC,IAAA,wBAAI,EAAC,GAAG,EAAE,CAAC,wBAAO,CAAC;;yCACA"}
