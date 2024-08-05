@@ -1,8 +1,12 @@
 import { Cliente } from './cliente.entity';
 export declare class Conta {
     id: string;
-    cliente: Cliente;
-    saldo: number;
+    numeroConta: string;
+    agencia: string;
     tipo: 'corrente' | 'poupanca';
-    limiteChequeEspecial?: number;
+    saldo: number;
+    dataAbertura: Date;
+    status: 'ativa' | 'inativa' | 'suspensa';
+    limiteCredito?: number;
+    titular: Cliente;
 }

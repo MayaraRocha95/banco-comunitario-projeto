@@ -8,56 +8,49 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var ContaService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContaService = void 0;
 const common_1 = require("@nestjs/common");
 const class_transformer_1 = require("class-transformer");
 const conta_entity_1 = require("../entities/conta.entity");
 const cliente_service_1 = require("./cliente.service");
-let ContaService = ContaService_1 = class ContaService {
+let ContaService = class ContaService {
     constructor(clienteService) {
         this.clienteService = clienteService;
         this.contas = [];
-        this.logger = new common_1.Logger(ContaService_1.name);
     }
     create(createContaDto) {
-        try {
-            const cliente = this.clienteService.findAll().find(c => c.id === createContaDto.clienteId);
-            if (!cliente) {
-                throw new common_1.NotFoundException(`Cliente com ID ${createContaDto.clienteId} não encontrado`);
-            }
-            const novaConta = this.createConta(createContaDto, cliente);
-            cliente.contas.push(novaConta);
-            this.contas.push(novaConta);
-            return novaConta;
+        const cliente = this.clienteService.findAll().find(c => c.id === createContaDto.clienteId);
+        if (!cliente) {
+            throw new common_1.NotFoundException(`Cliente com ID ${createContaDto.clienteId} não encontrado`);
         }
-        catch (error) {
-            this.logger.error('Erro ao criar conta', error.stack);
-            throw new common_1.BadRequestException(error.message);
-        }
+        const novaConta = (0, class_transformer_1.plainToClass)(conta_entity_1.Conta, {
+            id: this.generateUniqueId(),
+            numeroConta: this.generateAccountNumber(),
+            agencia: createContaDto.agencia,
+            tipo: createContaDto.tipo,
+            saldo: createContaDto.saldoInicial,
+            dataAbertura: new Date(),
+            status: 'ativa',
+            limiteCredito: createContaDto.limiteCredito,
+            titular: cliente,
+        });
+        cliente.contas.push(novaConta);
+        this.contas.push(novaConta);
+        return novaConta;
     }
     findAll() {
-        try {
-            return this.contas.map((conta) => (0, class_transformer_1.plainToClass)(conta_entity_1.Conta, conta));
-        }
-        catch (error) {
-            this.logger.error('Erro ao listar todas as contas', error.stack);
-            throw new common_1.BadRequestException(error.message);
-        }
+        return this.contas.map(conta => (0, class_transformer_1.plainToClass)(conta_entity_1.Conta, conta));
     }
     findOne(id) {
-        try {
-            const conta = this.findContaById(id);
-            return (0, class_transformer_1.plainToClass)(conta_entity_1.Conta, conta);
+        const conta = this.contas.find(c => c.id === id);
+        if (!conta) {
+            throw new common_1.NotFoundException(`Conta com ID ${id} não encontrada`);
         }
-        catch (error) {
-            this.logger.error(`Conta com ID ${id} não encontrada`, error.stack);
-            throw new common_1.NotFoundException(error.message);
-        }
+        return conta;
     }
     update(id, updateContaDto) {
-        const contaIndex = this.findContaIndexById(id);
+        const contaIndex = this.contas.findIndex(c => c.id === id);
         if (contaIndex === -1) {
             throw new common_1.NotFoundException(`Conta com ID ${id} não encontrada`);
         }
@@ -65,49 +58,15 @@ let ContaService = ContaService_1 = class ContaService {
         this.contas[contaIndex] = (0, class_transformer_1.plainToClass)(conta_entity_1.Conta, updatedConta);
         return updatedConta;
     }
-    remove(id) {
-        try {
-            const contaIndex = this.findContaIndexById(id);
-            this.contas.splice(contaIndex, 1);
-            return true;
-        }
-        catch (error) {
-            this.logger.error(`Erro ao remover conta com ID ${id}`, error.stack);
-            throw new common_1.BadRequestException(error.message);
-        }
-    }
-    createConta(createContaDto, cliente) {
-        return (0, class_transformer_1.plainToClass)(conta_entity_1.Conta, {
-            id: this.generateUniqueId(),
-            cliente,
-            saldo: createContaDto.saldoInicial,
-            tipo: createContaDto.tipo,
-            limiteChequeEspecial: this.calculateOverdraftLimit(createContaDto.tipo),
-        });
-    }
-    findContaById(id) {
-        const conta = this.contas.find((conta) => conta.id === id);
-        if (!conta) {
-            throw new common_1.NotFoundException(`Conta com ID ${id} não encontrada`);
-        }
-        return conta;
-    }
-    findContaIndexById(id) {
-        const index = this.contas.findIndex((conta) => conta.id === id);
-        if (index === -1) {
-            throw new common_1.NotFoundException(`Conta com ID ${id} não encontrada`);
-        }
-        return index;
-    }
     generateUniqueId() {
         return Math.random().toString(36).substring(2);
     }
-    calculateOverdraftLimit(tipo) {
-        return tipo === 'corrente' ? 100 : undefined;
+    generateAccountNumber() {
+        return Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
     }
 };
 exports.ContaService = ContaService;
-exports.ContaService = ContaService = ContaService_1 = __decorate([
+exports.ContaService = ContaService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [cliente_service_1.ClienteService])
 ], ContaService);
