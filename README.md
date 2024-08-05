@@ -11,6 +11,9 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
 3. **Infraestrutura**: Implementa os adaptadores e interfaces para comunicação com sistemas externos, como bancos de dados, APIs, etc.
 
 
+
+
+
 ## Instalação
 
 1. Clone o repositório:
