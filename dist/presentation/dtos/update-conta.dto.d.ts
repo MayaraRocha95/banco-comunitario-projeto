@@ -1,4 +1,5 @@
 export declare class UpdateContaDto {
     saldo?: number;
-    limiteChequeEspecial?: number;
+    limiteCredito?: number;
+    status?: 'ativa' | 'inativa' | 'suspensa';
 }

@@ -1,5 +1,5 @@
 export class UpdateContaDto {
-    saldo?: number;
-    limiteChequeEspecial?: number;
-  }
-  
+  saldo?: number;
+  limiteCredito?: number;
+  status?: 'ativa' | 'inativa' | 'suspensa';
+}
