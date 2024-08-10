@@ -1,15 +1,28 @@
-import { Exclude, Type } from 'class-transformer';
-import { Conta } from './conta.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Gerente } from './gerente.entity';
+import { Conta } from './conta.entity';
 
+@Entity()
 export class Cliente {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
   nome: string;
+
+  @Column()
   endereco: string;
+
+  @Column()
   telefone: string;
+
+  @Column('decimal', { precision: 10, scale: 2 })
   renda: number;
-  @Type(() => Conta)
-  contas: Conta[];
-  @Exclude()
+
+  @ManyToOne(() => Gerente, (gerente) => gerente.clientes, { nullable: true })
   gerente: Gerente;
+
+  @OneToMany(() => Conta, (conta) => conta.titular)
+  contas: Conta[];
 }
+

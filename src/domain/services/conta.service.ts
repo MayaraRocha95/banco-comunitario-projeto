@@ -1,62 +1,52 @@
-import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Conta } from '../entities/conta.entity';
-import { ClienteService } from './cliente.service';
+import { Cliente } from '../entities/cliente.entity';
+import { Transacao } from '../entities/transacao.entity';
 import { CreateContaDto } from '../../presentation/dtos/create-conta.dto';
 
 @Injectable()
 export class ContaService {
-  private readonly contas: Conta[] = [];
-  private readonly logger = new Logger(ContaService.name);
+  constructor(
+    @InjectRepository(Conta)
+    private contaRepository: Repository<Conta>,
+    @InjectRepository(Cliente)
+    private clienteRepository: Repository<Cliente>,
+    @InjectRepository(Transacao)
+    private transacaoRepository: Repository<Transacao>,
+  ) {}
 
-  constructor(private readonly clienteService: ClienteService) {}
 
-  public create(createContaDto: CreateContaDto): Conta {
-    try {
-      // Verifique se o cliente existe
-      const cliente = this.clienteService.findAll().find((c) => c.id === createContaDto.clienteId);
-      if (!cliente) {
-        this.logger.error(`Cliente com ID ${createContaDto.clienteId} não encontrado`);
-        throw new NotFoundException(`Cliente com ID ${createContaDto.clienteId} não encontrado`);
-      }
+  async create(createContaDto: CreateContaDto): Promise<Conta> {
+    const cliente = await this.clienteRepository.findOne({ where: { id: createContaDto.clienteId } });
 
-      // Criação da nova conta
-      const novaConta: Conta = plainToClass(Conta, {
-        id: this.generateUniqueId(),
-        numeroConta: this.generateAccountNumber(),
-        agencia: createContaDto.agencia,
-        tipo: createContaDto.tipo,
-        saldo: createContaDto.saldoInicial,
-        dataAbertura: new Date(),
-        status: 'ativa',
-        limiteCredito: createContaDto.limiteCredito,
-        titular: cliente,
-      });
-
-      cliente.contas.push(novaConta);
-      this.contas.push(novaConta);
-      this.logger.log(`Conta criada com sucesso: ${novaConta.numeroConta}`);
-      return novaConta;
-    } catch (error) {
-      this.logger.error('Erro ao criar conta', error.stack);
-      throw error; 
+    if (!cliente) {
+      throw new NotFoundException(`Cliente com ID ${createContaDto.clienteId} não encontrado`);
     }
+
+    const conta = this.contaRepository.create({
+      ...createContaDto,
+      titular: cliente,
+      numeroConta: this.generateAccountNumber(),
+      dataAbertura: new Date(),
+      status: 'ativa',
+      saldo: createContaDto.saldoInicial,
+    });
+
+    return this.contaRepository.save(conta);
   }
 
-  public findAll(): Conta[] {
-    return this.contas.map((conta) => plainToClass(Conta, conta));
+  async findAll(): Promise<Conta[]> {
+    return this.contaRepository.find({ relations: ['titular'] });
   }
 
-  public findOne(id: string): Conta {
-    const conta = this.contas.find((c) => c.id === id);
+  async findOne(id: string): Promise<Conta> {
+    const conta = await this.contaRepository.findOne({ where: { id }, relations: ['titular'] });
     if (!conta) {
       throw new NotFoundException(`Conta com ID ${id} não encontrada`);
     }
     return conta;
-  }
-
-  private generateUniqueId(): string {
-    return Math.random().toString(36).substring(2);
   }
 
   private generateAccountNumber(): string {

@@ -1,8 +1,7 @@
-import { Controller, Get, Post, Body,  HttpException, HttpStatus  } from '@nestjs/common';
-import { CreateClienteUseCase } from '../../../application/use-cases/create-cliente.use-case';
+import { Controller, Get, Post, Put, Param, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateClienteDto } from '../../../presentation/dtos/create-cliente.dto';
+import { UpdateClienteDto } from '../../../presentation/dtos/update-cliente.dto';
 import { ClienteService } from '../../../domain/services/cliente.service';
-
 
 @Controller('clientes')
 export class ClienteController {
@@ -24,5 +23,18 @@ export class ClienteController {
   @Get()
   async findAll() {
     return this.clienteService.findAll();
+  }
+
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() updateClienteDto: UpdateClienteDto) {
+    try {
+      const cliente = await this.clienteService.update(id, updateClienteDto);
+      return {
+        message: 'Cliente atualizado com sucesso',
+        data: cliente,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }

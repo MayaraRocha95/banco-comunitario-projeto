@@ -10,7 +10,7 @@ export class CreateGerenteUseCase {
 
   async execute(createGerenteDto: CreateGerenteDto): Promise<void> {
     const gerente = this.gerenteService.create(createGerenteDto);
-    await this.gerenteRepository.save(gerente);
+    await this.gerenteRepository.save(await gerente);
   }
 
   async findAll() {

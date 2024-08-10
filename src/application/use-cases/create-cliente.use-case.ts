@@ -13,6 +13,6 @@ export class CreateClienteUseCase {
 
   async execute(createClienteDto: CreateClienteDto): Promise<void> {
     const cliente = this.clienteService.create(createClienteDto);
-    await this.clienteRepository.save(cliente);
+    await this.clienteRepository.save(await cliente);
   }
 }

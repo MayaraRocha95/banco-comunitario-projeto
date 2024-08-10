@@ -8,24 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContaModule = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const conta_entity_1 = require("../../domain/entities/conta.entity");
+const transacao_entity_1 = require("../../domain/entities/transacao.entity");
 const conta_service_1 = require("../../domain/services/conta.service");
+const transacao_service_1 = require("../../domain/services/transacao.service");
 const conta_controller_1 = require("../adapters/http/conta.controller");
-const in_memory_conta_repository_1 = require("../adapters/persistence/in-memory-conta.repository");
 const cliente_module_1 = require("./cliente.module");
-const create_conta_use_case_1 = require("../../application/use-cases/create-conta.use-case");
 let ContaModule = class ContaModule {
 };
 exports.ContaModule = ContaModule;
 exports.ContaModule = ContaModule = __decorate([
     (0, common_1.Module)({
-        imports: [cliente_module_1.ClienteModule],
-        controllers: [conta_controller_1.ContaController],
-        providers: [
-            conta_service_1.ContaService,
-            create_conta_use_case_1.CreateContaUseCase,
-            { provide: 'ContaRepository', useClass: in_memory_conta_repository_1.InMemoryContaRepository },
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([conta_entity_1.Conta, transacao_entity_1.Transacao]),
+            cliente_module_1.ClienteModule,
         ],
-        exports: [conta_service_1.ContaService, create_conta_use_case_1.CreateContaUseCase],
+        controllers: [conta_controller_1.ContaController],
+        providers: [conta_service_1.ContaService, transacao_service_1.TransacaoService],
+        exports: [conta_service_1.ContaService, transacao_service_1.TransacaoService],
     })
 ], ContaModule);
 //# sourceMappingURL=conta.module.js.map

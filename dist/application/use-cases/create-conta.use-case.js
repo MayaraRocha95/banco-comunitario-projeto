@@ -8,7 +8,7 @@ class CreateContaUseCase {
     }
     async execute(createContaDto) {
         const conta = this.contaService.create(createContaDto);
-        await this.contaRepository.save(conta);
+        await this.contaRepository.save(await conta);
     }
     async findAll() {
         return this.contaRepository.findAll();

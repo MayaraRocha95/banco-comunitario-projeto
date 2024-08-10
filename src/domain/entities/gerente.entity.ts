@@ -1,17 +1,21 @@
-import { Type } from 'class-transformer';
+
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Cliente } from './cliente.entity';
 
+@Entity()
 export class Gerente {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column()
   nome: string;
+
+  @Column()
   email: string;
+
+  @Column()
   senha: string;
-  telefone: string;
-  endereco: string;
-  dataInicio: Date;
-  status: 'ativo' | 'inativo';
-  departamento: string;
-  nivelAcesso: string;
-  @Type(() => Cliente)
+
+  @OneToMany(() => Cliente, (cliente) => cliente.gerente)
   clientes: Cliente[];
 }

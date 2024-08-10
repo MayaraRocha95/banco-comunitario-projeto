@@ -10,13 +10,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Gerente = void 0;
-const class_transformer_1 = require("class-transformer");
+const typeorm_1 = require("typeorm");
 const cliente_entity_1 = require("./cliente.entity");
-class Gerente {
-}
+let Gerente = class Gerente {
+};
 exports.Gerente = Gerente;
 __decorate([
-    (0, class_transformer_1.Type)(() => cliente_entity_1.Cliente),
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    __metadata("design:type", String)
+], Gerente.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Gerente.prototype, "nome", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Gerente.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Gerente.prototype, "senha", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => cliente_entity_1.Cliente, (cliente) => cliente.gerente),
     __metadata("design:type", Array)
 ], Gerente.prototype, "clientes", void 0);
+exports.Gerente = Gerente = __decorate([
+    (0, typeorm_1.Entity)()
+], Gerente);
 //# sourceMappingURL=gerente.entity.js.map

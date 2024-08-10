@@ -1,4 +1,5 @@
 import { Cliente } from './cliente.entity';
+import { Transacao } from './transacao.entity';
 export declare class Conta {
     id: string;
     numeroConta: string;
@@ -7,6 +8,7 @@ export declare class Conta {
     saldo: number;
     dataAbertura: Date;
     status: 'ativa' | 'inativa' | 'suspensa';
-    limiteCredito?: number;
+    limiteCredito: number;
     titular: Cliente;
+    transacoes: Transacao[];
 }

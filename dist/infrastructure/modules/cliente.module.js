@@ -8,20 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClienteModule = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const cliente_entity_1 = require("../../domain/entities/cliente.entity");
 const cliente_service_1 = require("../../domain/services/cliente.service");
-const create_cliente_use_case_1 = require("../../application/use-cases/create-cliente.use-case");
-const in_memory_cliente_repository_1 = require("../adapters/persistence/in-memory-cliente.repository");
+const cliente_controller_1 = require("../adapters/http/cliente.controller");
 let ClienteModule = class ClienteModule {
 };
 exports.ClienteModule = ClienteModule;
 exports.ClienteModule = ClienteModule = __decorate([
     (0, common_1.Module)({
-        providers: [
-            cliente_service_1.ClienteService,
-            create_cliente_use_case_1.CreateClienteUseCase,
-            { provide: 'ClienteRepository', useClass: in_memory_cliente_repository_1.InMemoryClienteRepository },
-        ],
-        exports: [cliente_service_1.ClienteService, create_cliente_use_case_1.CreateClienteUseCase],
+        imports: [typeorm_1.TypeOrmModule.forFeature([cliente_entity_1.Cliente])],
+        controllers: [cliente_controller_1.ClienteController],
+        providers: [cliente_service_1.ClienteService],
+        exports: [typeorm_1.TypeOrmModule],
     })
 ], ClienteModule);
 //# sourceMappingURL=cliente.module.js.map

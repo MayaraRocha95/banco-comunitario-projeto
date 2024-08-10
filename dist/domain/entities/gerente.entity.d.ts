@@ -4,11 +4,5 @@ export declare class Gerente {
     nome: string;
     email: string;
     senha: string;
-    telefone: string;
-    endereco: string;
-    dataInicio: Date;
-    status: 'ativo' | 'inativo';
-    departamento: string;
-    nivelAcesso: string;
     clientes: Cliente[];
 }
