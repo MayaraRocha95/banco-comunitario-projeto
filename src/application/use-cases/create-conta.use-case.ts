@@ -10,7 +10,7 @@ export class CreateContaUseCase {
 
   async execute(createContaDto: CreateContaDto): Promise<void> {
     const conta = this.contaService.create(createContaDto);
-    await this.contaRepository.save(conta);
+    await this.contaRepository.save(await conta);
   }
 
   async findAll() {

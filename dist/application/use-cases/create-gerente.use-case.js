@@ -8,7 +8,7 @@ class CreateGerenteUseCase {
     }
     async execute(createGerenteDto) {
         const gerente = this.gerenteService.create(createGerenteDto);
-        await this.gerenteRepository.save(gerente);
+        await this.gerenteRepository.save(await gerente);
     }
     async findAll() {
         return this.gerenteRepository.findAll();

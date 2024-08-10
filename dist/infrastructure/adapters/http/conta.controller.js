@@ -14,11 +14,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContaController = void 0;
 const common_1 = require("@nestjs/common");
-const create_conta_dto_1 = require("../../../presentation/dtos/create-conta.dto");
 const conta_service_1 = require("../../../domain/services/conta.service");
+const transacao_service_1 = require("../../../domain/services/transacao.service");
+const create_conta_dto_1 = require("../../../presentation/dtos/create-conta.dto");
 let ContaController = class ContaController {
-    constructor(contaService) {
+    constructor(contaService, transacaoService) {
         this.contaService = contaService;
+        this.transacaoService = transacaoService;
     }
     async create(createContaDto) {
         try {
@@ -29,12 +31,7 @@ let ContaController = class ContaController {
             };
         }
         catch (error) {
-            if (error instanceof common_1.NotFoundException) {
-                throw new common_1.HttpException(error.message, common_1.HttpStatus.NOT_FOUND);
-            }
-            else {
-                throw new common_1.HttpException('Não foi possível criar a conta', common_1.HttpStatus.BAD_REQUEST);
-            }
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
     async findAll() {
@@ -47,6 +44,54 @@ let ContaController = class ContaController {
         }
         catch (error) {
             throw new common_1.HttpException(error.message, common_1.HttpStatus.NOT_FOUND);
+        }
+    }
+    async depositar(contaId, valor) {
+        try {
+            const transacao = await this.transacaoService.depositar(contaId, valor);
+            return {
+                message: 'Depósito realizado com sucesso',
+                data: transacao,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async sacar(contaId, valor) {
+        try {
+            const transacao = await this.transacaoService.sacar(contaId, valor);
+            return {
+                message: 'Saque realizado com sucesso',
+                data: transacao,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async transferir(contaOrigemId, contaDestinoId, valor) {
+        try {
+            const transacao = await this.transacaoService.transferir(contaOrigemId, contaDestinoId, valor);
+            return {
+                message: 'Transferência realizada com sucesso',
+                data: transacao,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async extrato(contaId) {
+        try {
+            const extrato = await this.transacaoService.getExtrato(contaId);
+            return {
+                message: 'Extrato obtido com sucesso',
+                data: extrato,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
 };
@@ -71,8 +116,41 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ContaController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Post)(':id/depositar'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('valor')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number]),
+    __metadata("design:returntype", Promise)
+], ContaController.prototype, "depositar", null);
+__decorate([
+    (0, common_1.Post)(':id/sacar'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('valor')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number]),
+    __metadata("design:returntype", Promise)
+], ContaController.prototype, "sacar", null);
+__decorate([
+    (0, common_1.Post)(':id/transferir'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('contaDestinoId')),
+    __param(2, (0, common_1.Body)('valor')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Number]),
+    __metadata("design:returntype", Promise)
+], ContaController.prototype, "transferir", null);
+__decorate([
+    (0, common_1.Get)(':id/extrato'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ContaController.prototype, "extrato", null);
 exports.ContaController = ContaController = __decorate([
     (0, common_1.Controller)('contas'),
-    __metadata("design:paramtypes", [conta_service_1.ContaService])
+    __metadata("design:paramtypes", [conta_service_1.ContaService,
+        transacao_service_1.TransacaoService])
 ], ContaController);
 //# sourceMappingURL=conta.controller.js.map

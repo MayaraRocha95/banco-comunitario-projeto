@@ -8,12 +8,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
 var GerenteService_1;
+
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GerenteService = void 0;
 const common_1 = require("@nestjs/common");
-const class_transformer_1 = require("class-transformer");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
 const gerente_entity_1 = require("../entities/gerente.entity");
+
+let GerenteService = class GerenteService {
+    constructor(gerenteRepository) {
+        this.gerenteRepository = gerenteRepository;
+    }
+    async create(createGerenteDto) {
+        const gerente = this.gerenteRepository.create(createGerenteDto);
+        return await this.gerenteRepository.save(gerente);
+
 const conta_entity_1 = require("../entities/conta.entity");
 const cliente_service_1 = require("./cliente.service");
 const conta_service_1 = require("./conta.service");
@@ -32,10 +48,16 @@ let GerenteService = GerenteService_1 = class GerenteService {
         });
         this.gerentes.push(gerente);
         return gerente;
+
     }
-    findAll() {
-        return this.gerentes.map((gerente) => (0, class_transformer_1.plainToClass)(gerente_entity_1.Gerente, gerente));
+    async findAll() {
+        return await this.gerenteRepository.find({ relations: ['clientes'] });
     }
+
+    async update(id, updateGerenteDto) {
+        await this.gerenteRepository.update(id, updateGerenteDto);
+        const gerente = await this.gerenteRepository.findOne({ where: { id } });
+
     addCliente(gerenteId, clienteId) {
         const gerente = this.findGerenteById(gerenteId);
         const cliente = this.clienteService.findAll().find((c) => c.id === clienteId);
@@ -90,19 +112,27 @@ let GerenteService = GerenteService_1 = class GerenteService {
     }
     findGerenteById(id) {
         const gerente = this.gerentes.find((g) => g.id === id);
+
         if (!gerente) {
             throw new common_1.NotFoundException(`Gerente com ID ${id} não encontrado`);
         }
         return gerente;
     }
-    generateUniqueId() {
-        return Math.random().toString(36).substring(2);
+    async remove(id) {
+        await this.gerenteRepository.delete(id);
     }
 };
 exports.GerenteService = GerenteService;
+
+exports.GerenteService = GerenteService = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(gerente_entity_1.Gerente)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
+
 exports.GerenteService = GerenteService = GerenteService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [cliente_service_1.ClienteService,
         conta_service_1.ContaService])
+
 ], GerenteService);
 //# sourceMappingURL=gerente.service.js.map

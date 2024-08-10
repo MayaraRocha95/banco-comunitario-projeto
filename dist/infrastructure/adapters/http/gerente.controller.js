@@ -22,11 +22,44 @@ let GerenteController = class GerenteController {
         this.gerenteService = gerenteService;
     }
     async create(createGerenteDto) {
-        return this.gerenteService.create(createGerenteDto);
+        try {
+            const gerente = await this.gerenteService.create(createGerenteDto);
+            return {
+                message: 'Gerente criado com sucesso',
+                data: gerente,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
     }
     async findAll() {
-        return this.gerenteService.findAll();
+        return await this.gerenteService.findAll();
     }
+
+    async update(id, updateGerenteDto) {
+        try {
+            const gerente = await this.gerenteService.update(id, updateGerenteDto);
+            return {
+                message: 'Gerente atualizado com sucesso',
+                data: gerente,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async remove(id) {
+        try {
+            await this.gerenteService.remove(id);
+            return {
+                message: 'Gerente removido com sucesso',
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+
     async addCliente(gerenteId, clienteId) {
         return this.gerenteService.addCliente(gerenteId, clienteId);
     }
@@ -41,6 +74,7 @@ let GerenteController = class GerenteController {
     }
     async closeConta(gerenteId, contaId) {
         return this.gerenteService.closeConta(gerenteId, contaId);
+
     }
 };
 exports.GerenteController = GerenteController;
@@ -97,7 +131,18 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
+
+], GerenteController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], GerenteController.prototype, "remove", null);
+
 ], GerenteController.prototype, "closeConta", null);
+
 exports.GerenteController = GerenteController = __decorate([
     (0, common_1.Controller)('gerentes'),
     __metadata("design:paramtypes", [gerente_service_1.GerenteService])

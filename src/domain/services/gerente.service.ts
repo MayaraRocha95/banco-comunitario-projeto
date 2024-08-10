@@ -1,3 +1,7 @@
+
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { Gerente } from '../entities/gerente.entity';
@@ -9,6 +13,16 @@ import { CreateContaDto } from '../../presentation/dtos/create-conta.dto';
 
 @Injectable()
 export class GerenteService {
+
+  constructor(
+    @InjectRepository(Gerente)
+    private gerenteRepository: Repository<Gerente>, // Certifique-se de que a injeção está correta
+  ) {}
+
+  async create(createGerenteDto: CreateGerenteDto): Promise<Gerente> {
+    const gerente = this.gerenteRepository.create(createGerenteDto);
+    return await this.gerenteRepository.save(gerente);
+
   private readonly gerentes: Gerente[] = [];
   private readonly logger = new Logger(GerenteService.name);
 
@@ -25,11 +39,17 @@ export class GerenteService {
     });
     this.gerentes.push(gerente);
     return gerente;
+
   }
 
-  findAll(): Gerente[] {
-    return this.gerentes.map((gerente) => plainToClass(Gerente, gerente));
+  async findAll(): Promise<Gerente[]> {
+    return await this.gerenteRepository.find({ relations: ['clientes'] });
   }
+
+
+  async update(id: string, updateGerenteDto: UpdateGerenteDto): Promise<Gerente> {
+    await this.gerenteRepository.update(id, updateGerenteDto);
+    const gerente = await this.gerenteRepository.findOne({ where: { id } });
 
   addCliente(gerenteId: string, clienteId: string): Gerente {
     const gerente = this.findGerenteById(gerenteId);
@@ -95,13 +115,14 @@ export class GerenteService {
 
   private findGerenteById(id: string): Gerente {
     const gerente = this.gerentes.find((g) => g.id === id);
+
     if (!gerente) {
       throw new NotFoundException(`Gerente com ID ${id} não encontrado`);
     }
     return gerente;
   }
 
-  private generateUniqueId(): string {
-    return Math.random().toString(36).substring(2);
+  async remove(id: string): Promise<void> {
+    await this.gerenteRepository.delete(id);
   }
 }

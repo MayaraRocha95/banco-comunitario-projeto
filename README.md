@@ -1,6 +1,6 @@
 # Banco Comunitário
 
-Este é um projeto de um sistema bancário simples desenvolvido com NestJS. O sistema permite gerenciar clientes, contas bancárias e gerentes, com funcionalidades para adicionar, remover e modificar contas e clientes.
+Este projeto é uma aplicação de gerenciamento bancário que implementa funcionalidades de criação de contas, gerenciamento de clientes e transações financeiras, incluindo depósitos, saques e transferências. A aplicação utiliza PostgreSQL como banco de dados relacional e TypeORM como ORM para facilitar a interação com o banco de dados.
 
 ## Arquitetura Hexagonal
 
@@ -11,7 +11,80 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
 3. **Infraestrutura**: Implementa os adaptadores e interfaces para comunicação com sistemas externos, como bancos de dados, APIs, etc.
 
 
+### Banco de Dados PostgreSQL e ORM
 
+1. **Configuração do Banco de Dados PostgreSQL**
+   - O banco de dados PostgreSQL foi configurado para armazenar informações sobre clientes, contas e transações.
+   - A conexão com o banco de dados é gerenciada através do TypeORM, que facilita o mapeamento entre as entidades do banco de dados e as classes da aplicação.
+
+2. **Integração com TypeORM**
+   - TypeORM foi utilizado para gerenciar interações com o banco de dados, permitindo a criação e manipulação de entidades de forma intuitiva.
+   - A configuração do TypeORM inclui a definição de entidades para `Cliente`, `Conta`, `Transacao`, e `Gerente`.
+
+### Funcionalidades Implementadas
+
+#### Gerenciamento de Clientes
+
+- **Criar Cliente**
+  - Rota: `POST /clientes`
+  - Descrição: Cria um novo cliente no sistema.
+  
+- **Listar Clientes**
+  - Rota: `GET /clientes`
+  - Descrição: Retorna todos os clientes cadastrados.
+
+- **Atualizar Cliente**
+  - Rota: `PUT /clientes/:id`
+  - Descrição: Atualiza as informações de um cliente existente.
+
+- **Deletar Cliente**
+  - Rota: `DELETE /clientes/:id`
+  - Descrição: Remove um cliente do sistema.
+
+#### Gerenciamento de Contas
+
+- **Criar Conta**
+  - Rota: `POST /contas`
+  - Descrição: Cria uma nova conta bancária associada a um cliente.
+  
+- **Listar Contas**
+  - Rota: `GET /contas`
+  - Descrição: Retorna todas as contas cadastradas.
+
+- **Consultar Conta**
+  - Rota: `GET /contas/:id`
+  - Descrição: Retorna os detalhes de uma conta específica.
+
+- **Deletar Conta**
+  - Rota: `DELETE /contas/:id`
+  - Descrição: Remove uma conta do sistema.
+
+#### Transações Financeiras
+
+- **Depósito**
+  - Rota: `POST /contas/:id/depositar`
+  - Descrição: Realiza um depósito em uma conta.
+
+- **Saque**
+  - Rota: `POST /contas/:id/sacar`
+  - Descrição: Realiza um saque de uma conta.
+
+- **Transferência**
+  - Rota: `POST /contas/:id/transferir`
+  - Descrição: Transfere fundos de uma conta para outra.
+
+#### Extrato de Transações
+
+- **Consultar Extrato**
+  - Rota: `GET /contas/:id/extrato`
+  - Descrição: Retorna o extrato de transações de uma conta específica, incluindo depósitos, saques e transferências.
+
+## Tecnologias Utilizadas
+
+- **Node.js**: Plataforma de desenvolvimento.
+- **NestJS**: Framework para construção de aplicações Node.js eficientes e escaláveis.
+- **PostgreSQL**: Banco de dados relacional utilizado para armazenamento de dados.
+- **TypeORM**: ORM (Object-Relational Mapping) utilizado para interagir com o banco de dados de forma simplificada.
 
 
 ## Instalação
@@ -40,3 +113,5 @@ Para iniciar o servidor de desenvolvimento:
 
 ```bash
 npm run start:dev
+```
+Projeto Criado por Mayara Rocha durante Imersão Avançado de Back-End da [Reprograma](https://reprograma.com.br/)

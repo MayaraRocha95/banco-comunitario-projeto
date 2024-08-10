@@ -8,22 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GerenteModule = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const gerente_entity_1 = require("../../domain/entities/gerente.entity");
 const gerente_service_1 = require("../../domain/services/gerente.service");
 const gerente_controller_1 = require("../adapters/http/gerente.controller");
-const cliente_module_1 = require("./cliente.module");
-const conta_module_1 = require("./conta.module");
-const in_memory_gerente_repository_1 = require("../adapters/persistence/in-memory-gerente.repository");
 let GerenteModule = class GerenteModule {
 };
 exports.GerenteModule = GerenteModule;
 exports.GerenteModule = GerenteModule = __decorate([
     (0, common_1.Module)({
-        imports: [cliente_module_1.ClienteModule, conta_module_1.ContaModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([gerente_entity_1.Gerente])],
         controllers: [gerente_controller_1.GerenteController],
-        providers: [
-            gerente_service_1.GerenteService,
-            { provide: 'GerenteRepository', useClass: in_memory_gerente_repository_1.InMemoryGerenteRepository },
-        ],
+        providers: [gerente_service_1.GerenteService],
         exports: [gerente_service_1.GerenteService],
     })
 ], GerenteModule);

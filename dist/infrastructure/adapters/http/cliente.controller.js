@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClienteController = void 0;
 const common_1 = require("@nestjs/common");
 const create_cliente_dto_1 = require("../../../presentation/dtos/create-cliente.dto");
+const update_cliente_dto_1 = require("../../../presentation/dtos/update-cliente.dto");
 const cliente_service_1 = require("../../../domain/services/cliente.service");
 let ClienteController = class ClienteController {
     constructor(clienteService) {
@@ -35,6 +36,18 @@ let ClienteController = class ClienteController {
     async findAll() {
         return this.clienteService.findAll();
     }
+    async update(id, updateClienteDto) {
+        try {
+            const cliente = await this.clienteService.update(id, updateClienteDto);
+            return {
+                message: 'Cliente atualizado com sucesso',
+                data: cliente,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
 };
 exports.ClienteController = ClienteController;
 __decorate([
@@ -50,6 +63,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ClienteController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, update_cliente_dto_1.UpdateClienteDto]),
+    __metadata("design:returntype", Promise)
+], ClienteController.prototype, "update", null);
 exports.ClienteController = ClienteController = __decorate([
     (0, common_1.Controller)('clientes'),
     __metadata("design:paramtypes", [cliente_service_1.ClienteService])

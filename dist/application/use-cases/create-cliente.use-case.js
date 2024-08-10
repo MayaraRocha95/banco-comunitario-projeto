@@ -22,7 +22,7 @@ let CreateClienteUseCase = class CreateClienteUseCase {
     }
     async execute(createClienteDto) {
         const cliente = this.clienteService.create(createClienteDto);
-        await this.clienteRepository.save(cliente);
+        await this.clienteRepository.save(await cliente);
     }
 };
 exports.CreateClienteUseCase = CreateClienteUseCase;
