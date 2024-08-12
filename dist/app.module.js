@@ -12,19 +12,23 @@ const typeorm_1 = require("@nestjs/typeorm");
 const cliente_module_1 = require("./infrastructure/modules/cliente.module");
 const conta_module_1 = require("./infrastructure/modules/conta.module");
 const gerente_module_1 = require("./infrastructure/modules/gerente.module");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: 'localhost',
-                port: 5432,
-                username: 'postgres',
-                password: 'Pedro2010@',
-                database: 'banco_comunitario',
+                host: process.env.DB_HOST,
+                port: parseInt(process.env.DB_PORT, 10),
+                username: process.env.DB_USERNAME,
+                password: process.env.DB_PASSWORD,
+                database: process.env.DB_NAME,
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
                 synchronize: true,
             }),
