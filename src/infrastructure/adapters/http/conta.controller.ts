@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, HttpException, HttpStatus } from '@
 import { ContaService } from 'src/domain/services/conta.service';
 import { TransacaoService } from 'src/domain/services/transacao.service';
 import { CreateContaDto } from 'src/presentation/dtos/create-conta.dto';
-
+import { CreateContaPagarDto } from 'src/presentation/dtos/create-conta-pagar.dto';
 
 @Controller('contas')
 export class ContaController {
@@ -85,7 +85,7 @@ export class ContaController {
   @Get(':id/extrato')
   async extrato(@Param('id') contaId: string) {
     try {
-      const extrato = await this.transacaoService.getExtrato(contaId);
+      const extrato = await this.contaService.getExtrato(contaId);
       return {
         message: 'Extrato obtido com sucesso',
         data: extrato,
@@ -95,5 +95,16 @@ export class ContaController {
     }
   }
 
-
+  @Post(':id/conta-pagar')
+  async criarContaPagar(@Param('id') contaId: string, @Body() createContaPagarDto: CreateContaPagarDto) {
+    try {
+      const contaPagar = await this.contaService.criarContaPagar(contaId, createContaPagarDto);
+      return {
+        message: 'Conta a pagar criada e paga com sucesso',
+        data: contaPagar,
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 }

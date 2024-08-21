@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const conta_service_1 = require("../../../domain/services/conta.service");
 const transacao_service_1 = require("../../../domain/services/transacao.service");
 const create_conta_dto_1 = require("../../../presentation/dtos/create-conta.dto");
+const create_conta_pagar_dto_1 = require("../../../presentation/dtos/create-conta-pagar.dto");
 let ContaController = class ContaController {
     constructor(contaService, transacaoService) {
         this.contaService = contaService;
@@ -84,10 +85,22 @@ let ContaController = class ContaController {
     }
     async extrato(contaId) {
         try {
-            const extrato = await this.transacaoService.getExtrato(contaId);
+            const extrato = await this.contaService.getExtrato(contaId);
             return {
                 message: 'Extrato obtido com sucesso',
                 data: extrato,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async criarContaPagar(contaId, createContaPagarDto) {
+        try {
+            const contaPagar = await this.contaService.criarContaPagar(contaId, createContaPagarDto);
+            return {
+                message: 'Conta a pagar criada e paga com sucesso',
+                data: contaPagar,
             };
         }
         catch (error) {
@@ -148,6 +161,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ContaController.prototype, "extrato", null);
+__decorate([
+    (0, common_1.Post)(':id/conta-pagar'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, create_conta_pagar_dto_1.CreateContaPagarDto]),
+    __metadata("design:returntype", Promise)
+], ContaController.prototype, "criarContaPagar", null);
 exports.ContaController = ContaController = __decorate([
     (0, common_1.Controller)('contas'),
     __metadata("design:paramtypes", [conta_service_1.ContaService,

@@ -15,16 +15,19 @@ const conta_service_1 = require("../../domain/services/conta.service");
 const transacao_service_1 = require("../../domain/services/transacao.service");
 const conta_controller_1 = require("../adapters/http/conta.controller");
 const cliente_module_1 = require("./cliente.module");
+const cliente_entity_1 = require("../../domain/entities/cliente.entity");
+const conta_pagar_entity_1 = require("../../domain/entities/conta-pagar.entity");
+const conta_pagar_controller_1 = require("../adapters/http/conta-pagar.controller");
 let ContaModule = class ContaModule {
 };
 exports.ContaModule = ContaModule;
 exports.ContaModule = ContaModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([conta_entity_1.Conta, transacao_entity_1.Transacao]),
+            typeorm_1.TypeOrmModule.forFeature([cliente_entity_1.Cliente, conta_entity_1.Conta, transacao_entity_1.Transacao, conta_pagar_entity_1.ContaPagar]),
             cliente_module_1.ClienteModule,
         ],
-        controllers: [conta_controller_1.ContaController],
+        controllers: [conta_controller_1.ContaController, conta_pagar_controller_1.ContaPagarController],
         providers: [conta_service_1.ContaService, transacao_service_1.TransacaoService],
         exports: [conta_service_1.ContaService, transacao_service_1.TransacaoService],
     })

@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Cliente } from './cliente.entity';
 import { Transacao } from './transacao.entity';
+import { ContaPagar } from './conta-pagar.entity';
 
 @Entity()
 export class Conta {
@@ -14,16 +15,16 @@ export class Conta {
   agencia: string;
 
   @Column()
-  tipo: 'corrente' | 'poupanca';
+  tipo: string;
 
   @Column('decimal', { precision: 10, scale: 2 })
   saldo: number;
 
-  @Column({ type: 'timestamp' })
+  @Column()
   dataAbertura: Date;
 
   @Column()
-  status: 'ativa' | 'inativa' | 'suspensa';
+  status: string;
 
   @Column('decimal', { precision: 10, scale: 2, nullable: true })
   limiteCredito: number;
@@ -33,4 +34,7 @@ export class Conta {
 
   @OneToMany(() => Transacao, (transacao) => transacao.conta)
   transacoes: Transacao[];
+
+  @OneToMany(() => ContaPagar, (contaPagar) => contaPagar.conta)
+  contasPagar: ContaPagar[]; // Adiciona essa linha para a relação com ContaPagar
 }

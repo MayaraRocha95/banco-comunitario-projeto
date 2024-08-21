@@ -13,6 +13,7 @@ exports.Conta = void 0;
 const typeorm_1 = require("typeorm");
 const cliente_entity_1 = require("./cliente.entity");
 const transacao_entity_1 = require("./transacao.entity");
+const conta_pagar_entity_1 = require("./conta-pagar.entity");
 let Conta = class Conta {
 };
 exports.Conta = Conta;
@@ -37,7 +38,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Conta.prototype, "saldo", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamp' }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Date)
 ], Conta.prototype, "dataAbertura", void 0);
 __decorate([
@@ -56,6 +57,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => transacao_entity_1.Transacao, (transacao) => transacao.conta),
     __metadata("design:type", Array)
 ], Conta.prototype, "transacoes", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => conta_pagar_entity_1.ContaPagar, (contaPagar) => contaPagar.conta),
+    __metadata("design:type", Array)
+], Conta.prototype, "contasPagar", void 0);
 exports.Conta = Conta = __decorate([
     (0, typeorm_1.Entity)()
 ], Conta);
