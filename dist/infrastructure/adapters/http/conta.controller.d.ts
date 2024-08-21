@@ -1,6 +1,7 @@
 import { ContaService } from 'src/domain/services/conta.service';
 import { TransacaoService } from 'src/domain/services/transacao.service';
 import { CreateContaDto } from 'src/presentation/dtos/create-conta.dto';
+import { CreateContaPagarDto } from 'src/presentation/dtos/create-conta-pagar.dto';
 export declare class ContaController {
     private readonly contaService;
     private readonly transacaoService;
@@ -25,6 +26,10 @@ export declare class ContaController {
     }>;
     extrato(contaId: string): Promise<{
         message: string;
-        data: any[];
+        data: any;
+    }>;
+    criarContaPagar(contaId: string, createContaPagarDto: CreateContaPagarDto): Promise<{
+        message: string;
+        data: import("../../../domain/entities/conta-pagar.entity").ContaPagar;
     }>;
 }

@@ -19,11 +19,32 @@ const typeorm_2 = require("typeorm");
 const conta_entity_1 = require("../entities/conta.entity");
 const cliente_entity_1 = require("../entities/cliente.entity");
 const transacao_entity_1 = require("../entities/transacao.entity");
+const conta_pagar_entity_1 = require("../entities/conta-pagar.entity");
 let ContaService = class ContaService {
-    constructor(contaRepository, clienteRepository, transacaoRepository) {
+    constructor(contaRepository, clienteRepository, transacaoRepository, contaPagarRepository) {
         this.contaRepository = contaRepository;
         this.clienteRepository = clienteRepository;
         this.transacaoRepository = transacaoRepository;
+        this.contaPagarRepository = contaPagarRepository;
+    }
+    async criarContaPagar(contaId, createContaPagarDto) {
+        const conta = await this.contaRepository.findOne({ where: { id: contaId } });
+        if (!conta) {
+            throw new common_1.NotFoundException('Conta não encontrada');
+        }
+        if (conta.saldo < createContaPagarDto.valor) {
+            throw new common_1.BadRequestException('Saldo insuficiente para pagar a conta');
+        }
+        const contaPagar = this.contaPagarRepository.create({
+            descricao: createContaPagarDto.descricao,
+            valor: createContaPagarDto.valor,
+            dataVencimento: createContaPagarDto.dataVencimento,
+            conta,
+            paga: true
+        });
+        conta.saldo -= createContaPagarDto.valor;
+        await this.contaRepository.save(conta);
+        return await this.contaPagarRepository.save(contaPagar);
     }
     async create(createContaDto) {
         const cliente = await this.clienteRepository.findOne({ where: { id: createContaDto.clienteId } });
@@ -50,6 +71,26 @@ let ContaService = class ContaService {
         }
         return conta;
     }
+    async getExtrato(contaId) {
+        const conta = await this.contaRepository.findOne({
+            where: { id: contaId },
+            relations: ['titular', 'transacoes', 'contasPagar'],
+        });
+        if (!conta) {
+            throw new common_1.NotFoundException('Conta não encontrada');
+        }
+        const transacoes = await this.transacaoRepository.find({
+            where: { conta: { id: contaId } },
+        });
+        const contasPagar = await this.contaPagarRepository.find({
+            where: { conta: { id: contaId } },
+        });
+        return {
+            saldoAtual: conta.saldo,
+            transacoes,
+            contasPagar,
+        };
+    }
     generateAccountNumber() {
         return Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
     }
@@ -60,7 +101,9 @@ exports.ContaService = ContaService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(conta_entity_1.Conta)),
     __param(1, (0, typeorm_1.InjectRepository)(cliente_entity_1.Cliente)),
     __param(2, (0, typeorm_1.InjectRepository)(transacao_entity_1.Transacao)),
+    __param(3, (0, typeorm_1.InjectRepository)(conta_pagar_entity_1.ContaPagar)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], ContaService);

@@ -1,14 +1,16 @@
 import { Cliente } from './cliente.entity';
 import { Transacao } from './transacao.entity';
+import { ContaPagar } from './conta-pagar.entity';
 export declare class Conta {
     id: string;
     numeroConta: string;
     agencia: string;
-    tipo: 'corrente' | 'poupanca';
+    tipo: string;
     saldo: number;
     dataAbertura: Date;
-    status: 'ativa' | 'inativa' | 'suspensa';
+    status: string;
     limiteCredito: number;
     titular: Cliente;
     transacoes: Transacao[];
+    contasPagar: ContaPagar[];
 }

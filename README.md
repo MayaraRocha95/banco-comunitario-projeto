@@ -21,7 +21,7 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
    - TypeORM foi utilizado para gerenciar interações com o banco de dados, permitindo a criação e manipulação de entidades de forma intuitiva.
    - A configuração do TypeORM inclui a definição de entidades para `Cliente`, `Conta`, `Transacao`, e `Gerente`.
 
-### Funcionalidades Implementadas
+## Funcionalidades Implementadas
 
 #### Gerenciamento de Clientes
 
@@ -79,6 +79,10 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
   - Rota: `GET /contas/:id/extrato`
   - Descrição: Retorna o extrato de transações de uma conta específica, incluindo depósitos, saques e transferências.
 
+ #### Pagar Contas 
+ - Rota: `POST /contas/{id-da-conta}/conta-pagar`
+ - Descrição: Assim que a conta a pagar é criada, o sistema deduz o valor do saldo da conta do cliente e marca a conta como paga.
+ 
 ## Tecnologias Utilizadas
 
 - **Node.js**: Plataforma de desenvolvimento.
