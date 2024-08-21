@@ -4,5 +4,5 @@ export declare class Gerente {
     nome: string;
     email: string;
     senha: string;
-    clientes: Cliente[];
+   clientes: Cliente[];
 }
