@@ -103,6 +103,15 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
 
  ![Imagem do Retorno](./docs/images/credito.png)
 
+  #### Gerente - Listar Contas com Créditos
+
+    
+  - **Visualizar Lista de Créditos**
+      - Rota: `GET /gerentes/contas-com-credito`
+      -  Descrição: Retorna uma lista de contas que possuem créditos concedidos. Essa lista inclui o nome do titular da conta, o tipo de crédito e o valor associado a cada crédito. Apenas gerentes têm acesso a essa funcionalidade para monitoramento e gestão dos créditos concedidos.
+
+ ![Imagem do Retorno](./docs/images/listacredito.png)
+
 
 ## Tecnologias Utilizadas
 

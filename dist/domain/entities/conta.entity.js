@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const cliente_entity_1 = require("./cliente.entity");
 const transacao_entity_1 = require("./transacao.entity");
 const conta_pagar_entity_1 = require("./conta-pagar.entity");
+const credito_entity_1 = require("./credito.entity");
 let Conta = class Conta {
 };
 exports.Conta = Conta;
@@ -61,6 +62,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => conta_pagar_entity_1.ContaPagar, (contaPagar) => contaPagar.conta),
     __metadata("design:type", Array)
 ], Conta.prototype, "contasPagar", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => credito_entity_1.Credito, (credito) => credito.conta),
+    __metadata("design:type", Array)
+], Conta.prototype, "creditos", void 0);
 exports.Conta = Conta = __decorate([
     (0, typeorm_1.Entity)()
 ], Conta);

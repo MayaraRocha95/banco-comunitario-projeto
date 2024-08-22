@@ -59,6 +59,18 @@ let GerenteController = class GerenteController {
             throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
         }
     }
+    async listarContasComCredito() {
+        try {
+            const contasComCredito = await this.gerenteService.listarContasComCredito();
+            return {
+                message: 'Lista de contas com crédito obtida com sucesso',
+                data: contasComCredito,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
 };
 exports.GerenteController = GerenteController;
 __decorate([
@@ -89,6 +101,12 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], GerenteController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Get)('contas-com-credito'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], GerenteController.prototype, "listarContasComCredito", null);
 exports.GerenteController = GerenteController = __decorate([
     (0, common_1.Controller)('gerentes'),
     __metadata("design:paramtypes", [gerente_service_1.GerenteService])

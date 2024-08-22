@@ -3,7 +3,6 @@ import { GerenteService } from 'src/domain/services/gerente.service';
 import { CreateGerenteDto } from 'src/presentation/dtos/create-gerente.dto';
 import { UpdateGerenteDto } from 'src/presentation/dtos/update-gerente.dto';
 
-
 @Controller('gerentes')
 export class GerenteController {
   constructor(private readonly gerenteService: GerenteService) {}
@@ -45,6 +44,19 @@ export class GerenteController {
       await this.gerenteService.remove(id);
       return {
         message: 'Gerente removido com sucesso',
+      };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Get('contas-com-credito')
+  async listarContasComCredito() {
+    try {
+      const contasComCredito = await this.gerenteService.listarContasComCredito();
+      return {
+        message: 'Lista de contas com crédito obtida com sucesso',
+        data: contasComCredito,
       };
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);

@@ -17,9 +17,13 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const gerente_entity_1 = require("../entities/gerente.entity");
+const conta_entity_1 = require("../entities/conta.entity");
+const credito_entity_1 = require("../entities/credito.entity");
 let GerenteService = class GerenteService {
-    constructor(gerenteRepository) {
+    constructor(gerenteRepository, contaRepository, creditoRepository) {
         this.gerenteRepository = gerenteRepository;
+        this.contaRepository = contaRepository;
+        this.creditoRepository = creditoRepository;
     }
     async create(createGerenteDto) {
         const gerente = this.gerenteRepository.create(createGerenteDto);
@@ -39,11 +43,31 @@ let GerenteService = class GerenteService {
     async remove(id) {
         await this.gerenteRepository.delete(id);
     }
+    async listarContasComCredito() {
+        const contasComCreditos = await this.contaRepository
+            .createQueryBuilder('conta')
+            .leftJoinAndSelect('conta.creditos', 'credito')
+            .leftJoinAndSelect('conta.titular', 'titular')
+            .where('credito.id IS NOT NULL')
+            .getMany();
+        return contasComCreditos.map(conta => ({
+            contaId: conta.id,
+            titularNome: conta.titular.nome,
+            creditos: conta.creditos.map(credito => ({
+                tipo: credito.tipo,
+                valor: credito.valor,
+            })),
+        }));
+    }
 };
 exports.GerenteService = GerenteService;
 exports.GerenteService = GerenteService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(gerente_entity_1.Gerente)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(conta_entity_1.Conta)),
+    __param(2, (0, typeorm_1.InjectRepository)(credito_entity_1.Credito)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository])
 ], GerenteService);
 //# sourceMappingURL=gerente.service.js.map

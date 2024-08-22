@@ -1,6 +1,7 @@
 import { Cliente } from './cliente.entity';
 import { Transacao } from './transacao.entity';
 import { ContaPagar } from './conta-pagar.entity';
+import { Credito } from './credito.entity';
 export declare class Conta {
     id: string;
     numeroConta: string;
@@ -13,5 +14,5 @@ export declare class Conta {
     titular: Cliente;
     transacoes: Transacao[];
     contasPagar: ContaPagar[];
-    creditos: any;
+    creditos: Credito[];
 }

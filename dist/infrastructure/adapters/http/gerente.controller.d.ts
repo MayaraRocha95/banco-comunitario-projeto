@@ -16,4 +16,8 @@ export declare class GerenteController {
     remove(id: string): Promise<{
         message: string;
     }>;
+    listarContasComCredito(): Promise<{
+        message: string;
+        data: any[];
+    }>;
 }
