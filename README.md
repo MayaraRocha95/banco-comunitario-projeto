@@ -10,6 +10,8 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
 2. **Aplicação**: Define os casos de uso e as interações entre o domínio e o mundo externo.
 3. **Infraestrutura**: Implementa os adaptadores e interfaces para comunicação com sistemas externos, como bancos de dados, APIs, etc.
 
+![Arquitetura do projeto](./docs/images/arquiterutahexagonal.png)
+
 
 ### Banco de Dados PostgreSQL e ORM
 
@@ -78,11 +80,18 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
 - **Consultar Extrato**
   - Rota: `GET /contas/:id/extrato`
   - Descrição: Retorna o extrato de transações de uma conta específica, incluindo depósitos, saques e transferências.
+   ##### Exemplo:
+
+    ![Imagem do Retorno](./docs/images/extrato.png)
 
  #### Pagar Contas 
  - Rota: `POST /contas/{id-da-conta}/conta-pagar`
  - Descrição: Assim que a conta a pagar é criada, o sistema deduz o valor do saldo da conta do cliente e marca a conta como paga.
- 
+  ##### Exemplo:
+
+ ![Imagem do Retorno](./docs/images/conta-pagar.png)
+
+
 ## Tecnologias Utilizadas
 
 - **Node.js**: Plataforma de desenvolvimento.
