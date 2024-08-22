@@ -1,10 +1,10 @@
-// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ClienteModule } from './infrastructure/modules/cliente.module';
 import { ContaModule } from './infrastructure/modules/conta.module';
 import { GerenteModule } from './infrastructure/modules/gerente.module';
 import { ConfigModule } from '@nestjs/config';
+import { CreditoModule } from './infrastructure/modules/credito.module';
 
 @Module({
   imports: [
@@ -24,6 +24,7 @@ import { ConfigModule } from '@nestjs/config';
     ClienteModule,
     ContaModule,
     GerenteModule,
+    CreditoModule, 
   ],
 })
 export class AppModule {}

@@ -92,6 +92,18 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
  ![Imagem do Retorno](./docs/images/conta-pagar.png)
 
 
+ #### Crédito para Financiamento e Consumo
+
+   - **Conceder Crédito**
+      - Rota: `POST /contas/:id/creditos`
+      -  Descrição: Concede crédito a uma conta específica, que pode ser utilizado para financiamento de empreendimentos solidários ou para consumo pessoal e familiar. A funcionalidade permite registrar um crédito no sistema, especificando o tipo de crédito (empreendimento ou pessoal) e o valor concedido.
+        O crédito concedido será registrado com a data de concessão e um saldo devedor igual ao valor concedido, que será associado à conta especificada.
+
+  ##### Exemplo:
+
+ ![Imagem do Retorno](./docs/images/credito.png)
+
+
 ## Tecnologias Utilizadas
 
 - **Node.js**: Plataforma de desenvolvimento.

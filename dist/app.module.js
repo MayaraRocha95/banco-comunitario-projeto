@@ -13,6 +13,7 @@ const cliente_module_1 = require("./infrastructure/modules/cliente.module");
 const conta_module_1 = require("./infrastructure/modules/conta.module");
 const gerente_module_1 = require("./infrastructure/modules/gerente.module");
 const config_1 = require("@nestjs/config");
+const credito_module_1 = require("./infrastructure/modules/credito.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -35,6 +36,7 @@ exports.AppModule = AppModule = __decorate([
             cliente_module_1.ClienteModule,
             conta_module_1.ContaModule,
             gerente_module_1.GerenteModule,
+            credito_module_1.CreditoModule,
         ],
     })
 ], AppModule);

@@ -37,4 +37,5 @@ export class Conta {
 
   @OneToMany(() => ContaPagar, (contaPagar) => contaPagar.conta)
   contasPagar: ContaPagar[]; // Adiciona essa linha para a relação com ContaPagar
+    creditos: any;
 }

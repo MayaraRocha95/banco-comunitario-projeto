@@ -13,4 +13,5 @@ export declare class Conta {
     titular: Cliente;
     transacoes: Transacao[];
     contasPagar: ContaPagar[];
+    creditos: any;
 }
