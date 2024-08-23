@@ -5,6 +5,8 @@ import { ContaModule } from './infrastructure/modules/conta.module';
 import { GerenteModule } from './infrastructure/modules/gerente.module';
 import { ConfigModule } from '@nestjs/config';
 import { CreditoModule } from './infrastructure/modules/credito.module';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   imports: [

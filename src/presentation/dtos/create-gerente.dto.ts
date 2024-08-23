@@ -15,6 +15,3 @@ export class CreateGerenteDto {
   senha: string;
 }
 
-    nome: string;
-  }
-
