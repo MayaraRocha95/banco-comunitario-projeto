@@ -10,6 +10,8 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
 2. **Aplicação**: Define os casos de uso e as interações entre o domínio e o mundo externo.
 3. **Infraestrutura**: Implementa os adaptadores e interfaces para comunicação com sistemas externos, como bancos de dados, APIs, etc.
 
+![Arquitetura do projeto](./docs/images/arquiterutahexagonal.png)
+
 
 ### Banco de Dados PostgreSQL e ORM
 
@@ -78,11 +80,39 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
 - **Consultar Extrato**
   - Rota: `GET /contas/:id/extrato`
   - Descrição: Retorna o extrato de transações de uma conta específica, incluindo depósitos, saques e transferências.
+   ##### Exemplo:
+
+    ![Imagem do Retorno](./docs/images/extrato.png)
 
  #### Pagar Contas 
  - Rota: `POST /contas/{id-da-conta}/conta-pagar`
  - Descrição: Assim que a conta a pagar é criada, o sistema deduz o valor do saldo da conta do cliente e marca a conta como paga.
- 
+  ##### Exemplo:
+
+ ![Imagem do Retorno](./docs/images/conta-pagar.png)
+
+
+ #### Crédito para Financiamento e Consumo
+
+   - **Conceder Crédito**
+      - Rota: `POST /contas/:id/creditos`
+      -  Descrição: Concede crédito a uma conta específica, que pode ser utilizado para financiamento de empreendimentos solidários ou para consumo pessoal e familiar. A funcionalidade permite registrar um crédito no sistema, especificando o tipo de crédito (empreendimento ou pessoal) e o valor concedido.
+        O crédito concedido será registrado com a data de concessão e um saldo devedor igual ao valor concedido, que será associado à conta especificada.
+
+  ##### Exemplo:
+
+ ![Imagem do Retorno](./docs/images/credito.png)
+
+  #### Gerente - Listar Contas com Créditos
+
+    
+  - **Visualizar Lista de Créditos**
+      - Rota: `GET /gerentes/contas-com-credito`
+      -  Descrição: Retorna uma lista de contas que possuem créditos concedidos. Essa lista inclui o nome do titular da conta, o tipo de crédito e o valor associado a cada crédito. Apenas gerentes têm acesso a essa funcionalidade para monitoramento e gestão dos créditos concedidos.
+
+ ![Imagem do Retorno](./docs/images/listacredito.png)
+
+
 ## Tecnologias Utilizadas
 
 - **Node.js**: Plataforma de desenvolvimento.

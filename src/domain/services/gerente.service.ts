@@ -5,9 +5,8 @@ import { Repository } from 'typeorm';
 import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { Gerente } from '../entities/gerente.entity';
-import { Conta } from '../entities/conta.entity'; // Adicionando a importação da entidade Conta
-import { ClienteService } from './cliente.service';
-import { ContaService } from './conta.service';
+import { Conta } from '../entities/conta.entity';
+import { Credito } from '../entities/credito.entity';
 import { CreateGerenteDto } from '../../presentation/dtos/create-gerente.dto';
 import { CreateContaDto } from '../../presentation/dtos/create-conta.dto';
 
@@ -16,7 +15,11 @@ export class GerenteService {
 
   constructor(
     @InjectRepository(Gerente)
-    private gerenteRepository: Repository<Gerente>, // Certifique-se de que a injeção está correta
+    private gerenteRepository: Repository<Gerente>,
+    @InjectRepository(Conta)
+    private contaRepository: Repository<Conta>,
+    @InjectRepository(Credito)
+    private creditoRepository: Repository<Credito>,
   ) {}
 
   async create(createGerenteDto: CreateGerenteDto): Promise<Gerente> {
@@ -124,5 +127,24 @@ export class GerenteService {
 
   async remove(id: string): Promise<void> {
     await this.gerenteRepository.delete(id);
+  }
+
+
+  async listarContasComCredito(): Promise<any[]> {
+    const contasComCreditos = await this.contaRepository
+      .createQueryBuilder('conta')
+      .leftJoinAndSelect('conta.creditos', 'credito')
+      .leftJoinAndSelect('conta.titular', 'titular')
+      .where('credito.id IS NOT NULL')
+      .getMany();
+
+    return contasComCreditos.map(conta => ({
+      contaId: conta.id,
+      titularNome: conta.titular.nome,
+      creditos: conta.creditos.map(credito => ({
+        tipo: credito.tipo,
+        valor: credito.valor,
+      })),
+    }));
   }
 }

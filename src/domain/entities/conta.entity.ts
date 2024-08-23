@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'ty
 import { Cliente } from './cliente.entity';
 import { Transacao } from './transacao.entity';
 import { ContaPagar } from './conta-pagar.entity';
+import { Credito } from './credito.entity';
 
 @Entity()
 export class Conta {
@@ -36,5 +37,8 @@ export class Conta {
   transacoes: Transacao[];
 
   @OneToMany(() => ContaPagar, (contaPagar) => contaPagar.conta)
-  contasPagar: ContaPagar[]; // Adiciona essa linha para a relação com ContaPagar
+  contasPagar: ContaPagar[];
+
+  @OneToMany(() => Credito, (credito) => credito.conta)
+  creditos: Credito[]; 
 }
