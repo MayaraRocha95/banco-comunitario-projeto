@@ -10,6 +10,7 @@ export class Gerente {
   @Column()
   nome: string;
 
+
   @Column()
   email: string;
 
@@ -17,5 +18,8 @@ export class Gerente {
   senha: string;
 
   @OneToMany(() => Cliente, (cliente) => cliente.gerente)
+
+  @Type(() => Cliente)
+
   clientes: Cliente[];
 }
