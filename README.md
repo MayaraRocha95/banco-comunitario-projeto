@@ -67,13 +67,27 @@ O projeto utiliza a Arquitetura Hexagonal (também conhecida como Arquitetura de
   - Rota: `POST /contas/:id/depositar`
   - Descrição: Realiza um depósito em uma conta.
 
+  ##### Exemplo:
+
+    ![Imagem do Retorno](./docs/images/deposito.png)
+
 - **Saque**
   - Rota: `POST /contas/:id/sacar`
   - Descrição: Realiza um saque de uma conta.
 
+  ##### Exemplo:
+
+    ![Imagem do Retorno](./docs/images/saque.png)
+
+
 - **Transferência**
   - Rota: `POST /contas/:id/transferir`
   - Descrição: Transfere fundos de uma conta para outra.
+  
+  ##### Exemplo:
+
+    ![Imagem do Retorno](./docs/images/tranferencia.png)
+
 
 #### Extrato de Transações
 
