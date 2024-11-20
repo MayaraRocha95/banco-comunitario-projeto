@@ -1,5 +1,6 @@
 # Banco Comunitário
 
+
 Este projeto é uma aplicação de gerenciamento bancário que implementa funcionalidades de criação de contas, gerenciamento de clientes e transações financeiras, incluindo depósitos, saques e transferências. A aplicação utiliza PostgreSQL como banco de dados relacional e TypeORM como ORM para facilitar a interação com o banco de dados.
 
 ## Arquitetura Hexagonal
